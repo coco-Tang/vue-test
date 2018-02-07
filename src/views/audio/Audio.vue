@@ -1,34 +1,58 @@
 <template>
   <div class="media">
+    <button @click="play">按钮</button>
+      <div class="title">
+        <span>文件名：</span>
+        <span class="filename">花婆婆</span>
+        <span>播放速度：</span>
+        <span class="speed">125%</span>
+      </div>
       <div class="wave">
         <div id="waveform"></div>
         <div id="waveform-timeline"></div>
       </div>      
       <div class="wave-controll">
         <ul ref="btns">
-          <li id="skipBackwardbutton"  title="慢放"></li>
-          <li id="playPausebutton" :class="{ 'on' : params.playPausebutton }" title="播放/暂停"></li>
-          <li id="skipForwardbutton"  title="快放"></li>
-          <li id="stopbutton" :class="{ 'on' : params.stopbutton }" title="停止"></li>
-          <li id="toggleMutebutton" :class="{ 'on' : params.toggleMutebutton }" class="sound"></li>
-          <li id="sound">
-            <input id="volButton" type="range" min="0" max="1" value="0.8" step="0.01" />
+          <li class="left">
+            <!-- id="playPausebutton" :class="{ 'on' : params.playPausebutton }" title="播放/暂停" -->
+            <div title="慢放" id="skipBackwardbutton"></div>
+            <div :class="{ 'on' : params.playPausebutton }" title="播放/暂停" id="playPausebutton"></div>
+            <div title="快放" id="skipForwardbutton"></div>
+            <div :class="{ 'on' : params.stopbutton }" title="停止" id="stopbutton"></div>
+            <div :class="{ 'on' : params.toggleMutebutton }" class="sound" id="toggleMutebutton"></div>
+            <div>
+              <input id="volButton" type="range" min="0" max="1" value="0.8" step="0.01" />
+            </div>
+            <div title="放大" id="big"></div>
+            <div title="缩小" id="small"></div>
+            <div>VAD</div>
+            <div>Trans</div>
+            <div>自动显示转写</div>
           </li>
-          <li id="big" title="放大"></li>
-          <li id="small" title="缩小"></li>
-          <li id="downLoad"  @click="downloadVoice()"></li>
+          <li class="right">
+            <div>对不同声纹上色</div>
+            <div>选择绿色部分</div>
+            <div>选择蓝色部分</div>
+            <div>？？</div>
+            <div>剪切</div>
+            <div>？？</div>
+            <div>删除</div>
+            <div>往前</div>
+            <div>往后</div>
+            <div>保存</div>
+            <div></div>
+          </li>
         </ul>
         
       </div>
    </div>
 </template>
 <script>
-// import {mapActions,mapGetters} from 'vuex'
+import axios from "axios"
+import {mapActions,mapGetters} from 'vuex'
 import WaveSurfer from "wavesurfer.js";
-// import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js";
-// import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js";
-// import HtmlInit from "wavesurfer.js/dist/wavesurfer-html-init.min.js"
-
+import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js";
+import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js";
 export default {
   data() {
     return {
@@ -39,29 +63,36 @@ export default {
         toggleMutebutton: true,
         zoomValue: 0
       },
+      audioPath: ""
     };
   },
-  computed: {
-    getAudioPath(){
-      return this.$store.state.audioPath
-    }
-  },
+  // computed: {
+  //   getAudioPath(){
+  //     return this.$store.state.audioPath
+  //   }
+  // },
+  // watch: {
+  //   getAudioPath(){
+  //     // this.audioPath = this.getaudioPath()
+  //     // console.log("audioPath1111111111")
+  //     // console.log(this.audioPath)
+  //     // this.loadAudio(this.audioPath)
+  //     this.loadAudio(this.$store.state.audioPath);
+  //     // this.loadAudio(`http://${BASE_API}${this.audioPath}`)
+  //     // new Promise(() => this.showWavesurfer());
+  //   }
+  // },
   watch: {
-    getAudioPath(){
-      // this.audioPath = this.getaudioPath()
-      // console.log("audioPath1111111111")
-      // console.log(this.audioPath)
-      // this.loadAudio(this.audioPath)
-      this.loadAudio(this.$store.state.audioPath);
-      // this.loadAudio(`http://${BASE_API}${this.audioPath}`)
-      // new Promise(() => this.showWavesurfer());
+    audioPath(){
+      // this.showWavesurfer();
     }
   },
   methods: {
-    // ...mapActions(['AUDIO_PATH']),
-    // ...mapGetters(['getaudioPath']),
+    ...mapActions(['AUDIO_PATH']),
+    ...mapGetters(['getaudioPath']),
     //wavesurfer初始化 flag:标记无效音
     showWavesurfer(flag = false) {
+      console.log(this.audioPath);
       //创建wavesurfer实例
       let wavesurfer = WaveSurfer.create({
         container: "#waveform",
@@ -75,28 +106,31 @@ export default {
         loaderColor: "#36a002",
         hideScrollbar: false,
         autoCenter: true,
-        height: 130,
-        // plugins: [
-        //   TimelinePlugin.create({
-        //     container: "#waveform-timeline",
-        //     fontSize: 14,
-        //     primaryFontColor: "#9499df",
-        //     secondaryFontColor: "#9499df",
-        //     primaryColor: "#9499df",
-        //     secondaryColor: "#9499df",
-        //     height:30
-        //   }),
-        //   RegionsPlugin.create({
-        //     // plugin options ...
-        //   })
-        // ]
+        height: 100,
+        plugins: [
+          TimelinePlugin.create({
+            container: "#waveform-timeline",
+            fontSize: 14,
+            primaryFontColor: "#9499df",
+            secondaryFontColor: "#9499df",
+            primaryColor: "#9499df",
+            secondaryColor: "#9499df",
+            height:26
+          }),
+          RegionsPlugin.create({
+            // plugin options ...
+          })
+        ]
       });
       /* 将创建的实例绑定到wavesurfer上，以供外面通过this调用 */
       this.wavesurfer = wavesurfer;
       /* 调用存在store中的文件路径 加载音频 */
       // this.loadAudio(this.$store.state.audioPath);
-      // this.loadAudio();
-      this.wavesurfer.load("http://music.163.com/#/playlist?id=2055039835");
+      console.log(this.audioPath);
+      this.loadAudio(this.audioPath);
+      // this.wavesurfer.load("../../../static/audio/乔颖_G_1.wav");
+      // this.loadAudio("http://192.168.1.65:8080/api/pcm/auto/20180126/f01秦燕_f-秦燕-17241734-16k-33.wav");
+      // this.loadAudio(this.audioPath);
       // 初始化按钮
       this.btnInit();
       //无效音跳过
@@ -114,7 +148,7 @@ export default {
         const defaultRate = 1,
         perRate = 0.25,
         defaultVol = 0.5;
-
+        // this.skipBackwardbutton();
       //慢放
       document.getElementById("skipBackwardbutton").onclick = () => {
         let playBackwardRate = this.wavesurfer.getPlaybackRate();
@@ -155,7 +189,7 @@ export default {
       document.getElementById("playPausebutton").onclick = () => {
         this.wavePlay();
       };
-
+      // this.playPausebutton();
       //停止
       document.getElementById("stopbutton").onclick = () => {
         this.params.playPausebutton = false;
@@ -205,6 +239,9 @@ export default {
       //音量条
       this.volumeBar();
     },
+
+
+
     // 播放/暂停
     wavePlay(start, end) {
       let wavesurfer = this.wavesurfer;
@@ -257,215 +294,257 @@ export default {
     loadAudio(data) {
       // console.log("loadAudio");
       console.log(data);
-      
+      // this.wavesurfer.load(data);
     },
     downloadVoice() {},
-    vad() {}
+    vad() {},
+    play() {
+      axios({
+        url: "http://localhost:9000/api/getaudiopath"
+      }).then(res => {
+        // console.log(res.data);
+        // this.isShow = true;
+        this.audioPath = res.data.result;
+        this.showWavesurfer();
+        // console.log(this.audioPath);
+        // this.AUDIO_PATH(res.data.result);
+      })
+    }
+  },
+  created() {
+    axios({
+        url: "http://localhost:9000/api/getaudiopath"
+      }).then(res => {
+        // console.log(res.data);
+        // this.isShow = true;
+        console.log(res.data.result);
+        this.audioPath = res.data.result;
+        console.log(this.audioPath);
+        // this.AUDIO_PATH(res.data.result);
+      })
   },
   mounted() {
-   new Promise(() => this.showWavesurfer());
+  //  new Promise(() => this.showWavesurfer());
   }
 };
 </script>
 <style lang="scss" scoped>
-ul,li {
-  list-style: none;
-}
 .media {
     margin-top: 10px;
     width: 100%;
-    height: 235px;
+    // height: 235px;
+  .title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background-color: rgba(55, 56, 66, 0.95);
+    >span {
+      color: #9395a2;
+      &:nth-child(2n) {
+        color: #eff0f6;
+      }
+      &:first-child {
+        margin-left:20px;
+      }
+      &:nth-child(3) {
+        margin-left:60px;
+      }
+    }
+  }
   .wave {
       width: 100%;
-      // height: 160px;
-      // flex-basis:128px;
+      height: 126px;
       background-color: #303036;
-      flex-shrink: 0;
   }
   .wave-controll{
       width: 100%;
-      height: 45px;
+      height: 40px;
       background-color: #40414b;
-      flex-shrink: 0;
-      ul{
-        display: -webkit-flex;
-        display: -moz-flex;
-        display: -ms-flex;
-        display: -o-flex;
+      >ul{
         display: flex;
-        flex-direction: row;
-        height: 45px;
-        li{
-          width: 18px;
-          height: 18px;
-          margin-top: 15px;
-          &.sound.on{
-            background: url("../../images/音量0.png") no-repeat;
-            background-size: 18px 18px;
-          }
-
-          &.sound.on:hover{
-           background: url("../../images/音量1.png") no-repeat;
-           background-size: 18px 18px;
-          }
-          &:nth-child(1){
-            margin-left: 28px;
-            background: url('../../images/慢放0.png') no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(1):hover{
-            background: url("../../images/慢放1.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(2){
-            margin-left: 30px;
-            background: url("../../images/暂停0.png") no-repeat;
-            background-size: 18px 18px;
-          }
-
-          &:nth-child(2).on{
-            background: url("../../images/播放0.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(2):hover::after{
-
-            display: block;
-            content: "";
-            width: 0.1px;
-            height: 0.1px;
-            border-radius: .05px;
-            box-shadow: 0 0 16px 10px #fff;
-            position: relative;
-            top: 08px;
-            right: -09px;
-            background-color: #fff;
-          }
-          &:nth-child(3){
-            margin-left: 30px;
-            background: url("../../images/快放0.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(3):hover{
-            background: url("../../images/快放1.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(4){
-            margin-left: 20px;
-            background: url("../../images/停止0.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(4):hover{
-            background: url("../../images/停止1.png") no-repeat;
-            background-size: 18px 18px;
-          }
-
-          &:nth-child(5){
-            margin-left:30px;
-            background: url("../../images/静音0.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(5):hover{
-            background: url("../../images/静音1.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(6){
-            margin-left: 14px;
-            width: 80px;
-            margin-top: 23px;
-            position: relative;
-          }
-          &:nth-child(6) div{
-          }
-          &:nth-child(6) div span{
-          }
-
-          &:nth-child(7){
-            margin-left: 30px;
-            background: url("../../images/lachang.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(7):hover{
-            background: url("../../images/音轨拉长1.png") no-repeat;
-            background-size: 18px 18px;
-          }
-
-          &:nth-child(8){
-            margin-left: 14px;
-            background: url("../../images/suoduan.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          &:nth-child(8):hover{
-            background: url("../../images/音轨缩短1.png") no-repeat;
-            background-size: 18px 18px;
-          }
-          
-          &:nth-child(9){
-            margin-right: 20px;
-            background: url("../../images/下载0.png") no-repeat;
-            background-size: 18px 18px;
-            margin-left: auto;
-          }
-          &:nth-child(9):hover{
-            background: url("../../images/下载1.png") no-repeat;
-            background-size: 18px 18px;
-
-          }
-          
-          input{
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            -ms-appearance: none;
-            width: 80px;
-            height: 2px;
-            background-color: #bbbbbb;
-            position: absolute;
-            left: 0;
-
-            &::-webkit-slider-thumb{
-              -webkit-appearance: none;
+        height: 40px;
+        justify-content: space-between;
+        align-items: center;
+        .left {
+          display: flex;
+          justify-content: space-between;
+          >div {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            margin-right: 1px;
+            border-right: 1px solid #9395a2;
+            border-left: 1px solid #9395a2;
+            font-size: 12px;
+            color: #9395a2;
+            &:first-child{
+              background: url('../../images/慢放0.png') no-repeat center;
+              border-left: none;
             }
-            &::-moz-range-trackpseduo{
-              -moz-appearance: none;
+            &:first-child:hover{
+              background: url("../../images/慢放1.png") no-repeat center;
             }
-            &::-ms-track {
-              width: 100%;
-              cursor: pointer;
-              background: transparent; /* Hides the slider so custom styles can be added */
-              border-color: transparent; color: transparent;
+            &:nth-child(2){
+              background: url("../../images/暂停0.png") no-repeat center;
             }
-            &:focus{
-              outline: none;
+            &:nth-child(2).on{
+              background: url("../../images/播放0.png") no-repeat center;
             }
-            &::-webkit-slider-thumb{
+            &:nth-child(3){
+              background: url("../../images/快放0.png") no-repeat center;
+            }
+            &:nth-child(3):hover{
+              background: url("../../images/快放1.png") no-repeat center;
+            }
+            &:nth-child(4){
+              background: url("../../images/停止0.png") no-repeat center;
+            }
+            &:nth-child(4):hover{
+              background: url("../../images/停止1.png") no-repeat center;
+            }
+            &:nth-child(5){
+              background: url("../../images/静音0.png") no-repeat center;
+              border-right: none;
+            }
+            &:nth-child(5):hover{
+              background: url("../../images/静音1.png") no-repeat center;
+            }
+            &.sound.on{
+              background: url("../../images/音量0.png") no-repeat center;
+            }
+            &.sound.on:hover{
+              background: url("../../images/音量1.png") no-repeat center;
+            }
+            &:nth-child(6){
+              width: 100px;
+              border-left: none;
+              line-height: 35px;
+              >input{
                 -webkit-appearance: none;
-                height: 9px;
-                width: 9px;
-                margin-top: -1px;
-                background: #bbb;
-                border-radius: 50%;
-                border: solid 0.125em rgba(205, 224, 230, 0.5);
-            }
-            &::-moz-range-thumb{
                 -moz-appearance: none;
-                height: 6px;
-                width: 6px;
-                margin-top: -1px;
-                background: #bbb;
-                border-radius: 50%;
-                border: solid 0.125em rgba(205, 224, 230, 0.5);
+                -ms-appearance: none;
+                width: 80px;
+                height: 2px;
+                background-color: #bbbbbb;
+                &::-webkit-slider-thumb{
+                  -webkit-appearance: none;
+                }
+                &::-moz-range-trackpseduo{
+                  -moz-appearance: none;
+                }
+                &::-ms-track {
+                  width: 100%;
+                  cursor: pointer;
+                  background: transparent; /* Hides the slider so custom styles can be added */
+                  border-color: transparent; color: transparent;
+                }
+                &:focus{
+                  outline: none;
+                }
+                &::-webkit-slider-thumb{
+                    -webkit-appearance: none;
+                    height: 9px;
+                    width: 9px;
+                    margin-top: -1px;
+                    background: #bbb;
+                    border-radius: 50%;
+                    border: solid 0.125em rgba(205, 224, 230, 0.5);
+                }
+                &::-moz-range-thumb{
+                    -moz-appearance: none;
+                    height: 6px;
+                    width: 6px;
+                    margin-top: -1px;
+                    background: #bbb;
+                    border-radius: 50%;
+                    border: solid 0.125em rgba(205, 224, 230, 0.5);
+                }
+                &::-ms-track{
+                    -moz-appearance: none;
+                    height: 6px;
+                    width: 6px;
+                    margin-top: -1px;
+                    background: #bbb;
+                    border-radius: 50%;
+                    border: solid 0.125em rgba(205, 224, 230, 0.5);
+                }
+              }
             }
-            &::-ms-track{
-                -moz-appearance: none;
-                height: 6px;
-                width: 6px;
-                margin-top: -1px;
-                background: #bbb;
-                border-radius: 50%;
-                border: solid 0.125em rgba(205, 224, 230, 0.5);
+            &:nth-child(7){
+              background: url("../../images/lachang.png") no-repeat center;
+            }
+            &:nth-child(7):hover{
+              background: url("../../images/音轨拉长1.png") no-repeat center;
+            }
+            &:nth-child(8){
+              background: url("../../images/suoduan.png") no-repeat center;
+            }
+            &:nth-child(8):hover{
+              background: url("../../images/音轨缩短1.png") no-repeat center;
+            }
+            &:nth-child(10){
+              width: 50px;
+            }
+            &:nth-child(11){
+              width: 100px;
+            }
+          }
+            
+            
+          // &:nth-child(9){
+          //   margin-right: 20px;
+          //   background: url("../../images/下载0.png") no-repeat;
+          //   background-size: 18px 18px;
+          //   margin-left: auto;
+          // }
+          // &:nth-child(9):hover{
+          //   background: url("../../images/下载1.png") no-repeat;
+          //   background-size: 18px 18px;
+
+          // }
+          
+          
+        }
+        .right {
+          display: flex;
+          justify-content: space-between;
+          >div {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            margin-right: 1px;
+            border-right: 1px solid #9395a2;
+            border-left: 1px solid #9395a2;
+            font-size: 12px;
+            color: #9395a2;
+            &:first-child{
+              width: 100px;
+            }
+            &:first-child:hover{
+              color: #fff;
+            }
+            &:nth-child(2){
+              width: 80px;
+            }
+            &:nth-child(2):hover{
+              color: #fff;
+            }
+            &:nth-child(3){
+              width: 80px;
+            }
+            &:nth-child(3):hover{
+              color: #fff;
+            }
+            &:last-child {
+              background: url("../../images/下载0.png") no-repeat center;
+            }
+            &:last-child:hover {
+              background: url("../../images/下载1.png") no-repeat center;
             }
           }
         }
-
       }
     }
 }

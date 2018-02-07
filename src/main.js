@@ -11,6 +11,11 @@ import router from "./routes/router.js"
 import store from "./store"
 import VueProgressBar from 'vue-progressbar'
 
+/* -------引入element-ui并使用-------- */
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+
 const options = {
     color: '#bffaf3',
     failedColor: '#874b4b',
@@ -37,4 +42,4 @@ var vm = new Vue({
     router,
     store
 })
-vm.$mount("#app")
+// vm.$mount("#app")
