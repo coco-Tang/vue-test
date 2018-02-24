@@ -1,6 +1,7 @@
 <template>
   <div class="media">
-    <button @click="play">按钮</button>
+    <button @click="one">按钮</button>
+    <button @click="two">按钮2</button>
       <div class="title">
         <span>文件名：</span>
         <span class="filename">花婆婆</span>
@@ -33,10 +34,10 @@
             <div>对不同声纹上色</div>
             <div>选择绿色部分</div>
             <div>选择蓝色部分</div>
-            <div>？？</div>
-            <div>剪切</div>
-            <div>？？</div>
-            <div>删除</div>
+            <div @click="paste">粘贴</div>
+            <div @click="cut">剪切</div>
+            <div @click="copy">复制</div>
+            <div @click="del">删除</div>
             <div>往前</div>
             <div>往后</div>
             <div>保存</div>
@@ -50,9 +51,11 @@
 <script>
 import axios from "axios"
 import {mapActions,mapGetters} from 'vuex'
-import WaveSurfer from "wavesurfer.js";
-import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js";
-import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js";
+import WaveSurfer from "wavesurfer.js"
+import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js"
+import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js"
+import $ from "jquery"
+import Editor from '../../utils/editor'
 export default {
   data() {
     return {
@@ -63,7 +66,6 @@ export default {
         toggleMutebutton: true,
         zoomValue: 0
       },
-      audioPath: ""
     };
   },
   // computed: {
@@ -88,243 +90,430 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['AUDIO_PATH']),
-    ...mapGetters(['getaudioPath']),
-    //wavesurfer初始化 flag:标记无效音
-    showWavesurfer(flag = false) {
-      console.log(this.audioPath);
-      //创建wavesurfer实例
+    showWavesurfer (url) {
       let wavesurfer = WaveSurfer.create({
-        container: "#waveform",
-        cursorColor: "#999",
-        audioRate: 1,
+        container: '#waveform',
+        cursorColor: '#999',
+        audioRate:1,
         scrollParent: true,
-        backend: "MediaElement",
+        backend: 'WebAudio',
         barHeight: 1.5,
-        waveColor: "#6983f4",
-        progressColor: "#36a002",
-        loaderColor: "#36a002",
-        hideScrollbar: false,
-        autoCenter: true,
-        height: 100,
+        waveColor     : '#6983f4',
+        progressColor : '#36a002',
+        loaderColor   : '#36a002',
+        hideScrollbar : false,
+        autoCenter    : true,
+        height:128,
         plugins: [
           TimelinePlugin.create({
-            container: "#waveform-timeline",
+            container: '#waveform-timeline',
             fontSize: 14,
             primaryFontColor: "#9499df",
             secondaryFontColor: "#9499df",
             primaryColor: "#9499df",
-            secondaryColor: "#9499df",
-            height:26
+            secondaryColor: "#9499df"
           }),
           RegionsPlugin.create({
-            // plugin options ...
+            
           })
         ]
-      });
-      /* 将创建的实例绑定到wavesurfer上，以供外面通过this调用 */
-      this.wavesurfer = wavesurfer;
-      /* 调用存在store中的文件路径 加载音频 */
-      // this.loadAudio(this.$store.state.audioPath);
-      console.log(this.audioPath);
-      this.loadAudio(this.audioPath);
-      // this.wavesurfer.load("../../../static/audio/乔颖_G_1.wav");
-      // this.loadAudio("http://192.168.1.65:8080/api/pcm/auto/20180126/f01秦燕_f-秦燕-17241734-16k-33.wav");
-      // this.loadAudio(this.audioPath);
-      // 初始化按钮
-      this.btnInit();
-      //无效音跳过
-      if (!flag) {
-        
-      }
-      //加载完成即刻播放
-      wavesurfer.on("ready", () => {
-        // this.wavePlay()自动播放
-        this.wavesurfer.zoom(0);
-      });
+      })
+	    wavesurfer.on('ready', (percents)=>{
+        this.wavesurfer.disableDragSelection()  
+	    	this.wavesurfer.enableDragSelection({color: 'rgba(0, 180, 0, 0.3)'})      
+	    })
+			wavesurfer.on('finish', function () {
+
+      })
+
+      document.querySelector("#waveform").addEventListener('mousedown',()=>{
+        this.wavesurfer.clearRegions()
+      })
+
+			this.wavesurfer = wavesurfer
+
+
+			this.btnInit()
+
+      wavesurfer.load(url || 'static/audio/乔颖_G_1.wav')
+
+
+      this.e = Editor.Editor.init(this.wavesurfer)
+
+      
     },
-    // 初始化按钮
-    btnInit() {
-        const defaultRate = 1,
-        perRate = 0.25,
-        defaultVol = 0.5;
-        // this.skipBackwardbutton();
-      //慢放
-      document.getElementById("skipBackwardbutton").onclick = () => {
-        let playBackwardRate = this.wavesurfer.getPlaybackRate();
-        if (this.wavesurfer.getPlaybackRate() == 0.5) {
-          this.$message({
-            message: this.params.playRate + "倍",
-            duration: 500
-          });
-          return;
-        }
-        this.params.playRate = playBackwardRate - perRate;
-        this.wavesurfer.setPlaybackRate(this.params.playRate);
-        this.$message({
-          message: this.params.playRate + "倍",
-          duration: 500
-        });
-      };
+    //按钮初始化
+    btnInit () {
+    	var that = this
+    	var defaultRate = 1,perRate = 0.25,defaultVol =  0.5
+    	// var wavesurfer=this.wavesurfer
+    	// var zoomValue=this.params.zoomValue
+    	//慢放
+    	$("#skipBackwardbutton").on("click",function(){
+    		var playBackwardRate = that.wavesurfer.getPlaybackRate()
+    		if(that.wavesurfer.getPlaybackRate() == .5){
+    			that.$message({
+		        message: that.params.playRate+"倍",
+		        duration: 500
+		      })
+    			return
+    		}
+    		// console.log(playBackwardRate - perRate)
+	      
+	      that.params.playRate = playBackwardRate - perRate
+	      that.wavesurfer.setPlaybackRate(that.params.playRate)
 
-      //快放
-      document.getElementById("skipForwardbutton").onclick = () => {
-        let playBackwardRate = this.wavesurfer.getPlaybackRate();
-        if (this.wavesurfer.getPlaybackRate() == 4) {
-          this.$message({
-            message: this.params.playRate + "倍",
-            duration: 500
-          });
-          return;
-        }
-        this.params.playRate = playBackwardRate + perRate;
-        this.wavesurfer.setPlaybackRate(this.params.playRate);
-        this.$message({
-          message: this.params.playRate + "倍",
-          duration: 500
-        });
-      };
+	      that.$message({
+	        message: that.params.playRate+"倍",
+	        duration: 500
+	      })
+    	})
+    	//快放
+    	$("#skipForwardbutton").on("click",function(){
+    		var playBackwardRate = that.wavesurfer.getPlaybackRate()
+    		// console.log(playBackwardRate + perRate)
+    		
+    		if(that.wavesurfer.getPlaybackRate() == 4){
+    			that.$message({
+		        message: that.params.playRate+"倍",
+		        duration: 500
+		      })
+    			return
+    		}
+    		
+    		that.params.playRate = playBackwardRate + perRate
+    		that.wavesurfer.setPlaybackRate(that.params.playRate)
 
-      //播放/暂停
-      document.getElementById("playPausebutton").onclick = () => {
-        this.wavePlay();
-      };
-      // this.playPausebutton();
-      //停止
-      document.getElementById("stopbutton").onclick = () => {
-        this.params.playPausebutton = false;
-        this.wavesurfer.stop();
-        this.wavesurfer.play(0, 0.01);
-        this.initWavesurferStatus();
-      };
+    		that.$message({
+	        message: that.params.playRate+"倍",
+	        duration: 500
+	      })
+    	})
+    	//播放/暂停
+    	$("#playPausebutton").on("click",function(){
+    		// alert(2)
+	        that.wavePlay();
+	        //wavesurfer.playPause();
+    	})
+    	//停止
+    	$("#stopbutton").on("click",function(){
+    		// console.log("***************************===》stop");
 
-      //静音开关
-      document.getElementById("toggleMutebutton").onclick = () => {
-        if (this.params.toggleMutebutton) {
-          this.wavesurfer.setVolume(0);
-          this.params.toggleMutebutton = false;
-          document.getElementById("volButton").value = 0;
-        } else {
-          this.wavesurfer.setVolume(1);
-          this.params.toggleMutebutton = true;
-          document.getElementById("volButton").value = 1;
-        }
-      };
+        $("#playPausebutton").removeClass('on');
+        that.wavesurfer.stop();
+        that.wavesurfer.play(0,.01);
+        that.initWavesurferStatus();
+    	})
+    	 //静音开关
+	    $("#toggleMutebutton").on("click",function(){
+
+	    	
+	    	if($(this).hasClass('on')){
+	    		$(this).removeClass('on');
+	    		that.wavesurfer.setVolume(0);
+	    		$("#volButton").val("0");
+	    	}else{
+	    		$(this).addClass('on');
+	    		that.wavesurfer.setVolume(1);
+	    		$("#volButton").val("1");
+	    	}
+	    })
+
       //放大 缩小
       document.getElementById("big").onclick = () => {
-        if (this.params.zoomValue >= 100) {
-          return;
+        if(this.params.zoomValue >= 100){
+          return
         }
-        this.params.zoomValue += 10;
-        this.wavesurfer.zoom(this.params.zoomValue);
-      };
+        this.params.zoomValue += 10
+        this.wavesurfer.zoom(this.params.zoomValue)
+      }
 
       document.getElementById("small").onclick = () => {
-        if (this.params.zoomValue <= 0) {
-          return;
+        if(this.params.zoomValue <= 0){
+          return
         }
-        this.params.zoomValue -= 10;
-        this.wavesurfer.zoom(this.params.zoomValue);
-      };
+        this.params.zoomValue -= 10
+        this.wavesurfer.zoom(this.params.zoomValue)
+      }
 
       //滚轮控制放大、缩小功能
-      document.getElementById("waveform").onmousewheel = e => {
+      document.getElementById("waveform").onmousewheel = (e) => {
         // console.log(e)
-        if (e.deltaY < 0) {
-          document.getElementById("small").click();
-        } else {
-          document.getElementById("big").click();
+        if(e.deltaY < 0){
+          document.getElementById("small").click()
+        }else{
+          document.getElementById("big").click()
         }
-      };
-      //音量条
-      this.volumeBar();
-    },
-
-
-
-    // 播放/暂停
-    wavePlay(start, end) {
-      let wavesurfer = this.wavesurfer;
-      wavesurfer.on("finish", () => {
-        this.params.playPausebutton = false;
-      });
-      start == null ? wavesurfer.playPause() : wavesurfer.play(start, end);
-      if (!wavesurfer.isPlaying()) {
-        this.params.playPausebutton = false;
-        // this.ISPLAY(this.isplay)
-        // if(this.params.displayTime){
-        //   clearInterval(this.params.displayTime)
-        // }
-      } else {
-        this.params.playPausebutton = true;
-        // this.ifPlay()
-
-        this.isplay = true;
-        // this.ISPLAY(this.isplay)
       }
+      //音量条
+      this.volumeBar()
     },
-    initWavesurferStatus() {
-      let wavesurfer = this.wavesurfer;
-      if (wavesurfer.isMuted) {
+    
+    //获取合路音频
+    //音量条
+    volumeBar () {
+    	// var wavesurfer = this.wavesurfer
+    	var flag=false;
+    	var that = this
+    	$("#volButton").on("mousedown",function(){
+    		flag=true;
+    		
+
+	    })
+	    $("#volButton").on("mousemove",function(e){
+	    	
+	    	if(!flag){
+	    		return;
+	    	}
+	    	if(e.offsetX>=0 && e.offsetX<=80){
+	    		$("#toggleMutebutton").addClass("on");
+	    		that.wavesurfer.setVolume(e.offsetX/80);
+	    	}else if(e.offsetX<0){
+	    		$("#toggleMutebutton").removeClass("on");
+	    		that.wavesurfer.setVolume(0);
+	    	}else{
+	    		that.wavesurfer.setVolume(1);
+	    	}
+
+	    })
+	    $("#volButton").on("mouseup",function(){
+	    	flag=false;
+	    	// if(this.value == 0){
+	    	// 	$("#toggleMutebutton").removeClass("on");
+	    	// }else{
+	    	// 	$("#toggleMutebutton").addClass("on");
+	    	// }
+	    	this.value == 0?$("#toggleMutebutton").removeClass("on"):$("#toggleMutebutton").addClass("on")
+	    	that.wavesurfer.setVolume($(this).val());
+
+	    })
+    },
+    initWavesurferStatus () {
+    	var wavesurfer=this.wavesurfer
+    	if(wavesurfer.isMuted){
         wavesurfer.toggleMute();
       }
     },
-    // 音量条
-    volumeBar() {
-      let flag = false;
-      let volButton = document.getElementById("volButton");
-      volButton.onmousedown = () => {
-        flag = true;
-      };
-      volButton.onmousemove = e => {
-        if (!flag) {
-          return;
-        }
-        if (e.offsetX >= 0 && e.offsetX <= 80) {
-          this.params.toggleMutebutton = true;
-          this.wavesurfer.setVolume(e.offsetX / 80);
-        } else if (e.offsetX < 0) {
-          this.params.toggleMutebutton = false;
-          this.wavesurfer.setVolume(0);
-        } else {
-          this.wavesurfer.setVolume(1);
-        }
-      };
+   
+    
+    toSecond (str) {
+    	var Temp = str.split(':')
+			var Seconds = 3600 * Number(Temp[0]) + 60 * Number(Temp[1]) + Number(Temp[2])
+			return Seconds;
     },
-    loadAudio(data) {
-      // console.log("loadAudio");
-      console.log(data);
-      // this.wavesurfer.load(data);
+
+    //播放、暂停
+    wavePlay (start,end) {
+    	var wavesurfer = this.wavesurfer
+    	start==null?wavesurfer.playPause():wavesurfer.play(start,end)
+    	
+    	if(!wavesurfer.isPlaying()) {
+      	// console.log("***************************====》pause ");
+        $("#playPausebutton").removeClass('on');
+      //   if(this.params.displayTime){
+	    	// 	clearInterval(this.params.displayTime)
+	    	// }
+	    }else{
+        // console.log("***************************===》play");
+        $("#playPausebutton").addClass('on');
+        // this.ifPlay()
+	        //同步显示功能
+	        // syncDisplay(data);
+	    
+	    }
+	    
     },
-    downloadVoice() {},
-    vad() {},
-    play() {
-      axios({
-        url: "http://localhost:9000/api/getaudiopath"
-      }).then(res => {
-        // console.log(res.data);
-        // this.isShow = true;
-        this.audioPath = res.data.result;
-        this.showWavesurfer();
-        // console.log(this.audioPath);
-        // this.AUDIO_PATH(res.data.result);
+    //加色块
+    waveRegion (start,end,color,clear) {
+    	if(!clear){
+    		this.wavesurfer.clearRegions()
+    	}
+    	
+  		this.wavesurfer.addRegion({
+    		start: start,
+    		end: end,
+    		color: color,
+    		drag: false
+    	})
+    },
+    
+		playRate () {
+			this.$message({
+        message: this.params.playRate+"倍",
+        duration: 500
       })
+		},
+		uploadMessage () {
+			this.$message({
+        message: '上传成功',
+        type: 'success',
+        duration: 2000
+      })
+		},
+		cancelMessage () {
+			this.$message({
+        message: '取消上传',
+        type: 'warning',
+        duration: 2000
+      })
+		},
+		returnlist () {
+			this.$router.push({path: '/wave'})
+		},
+		//解除绑定
+		unbindjq (){
+			$("#skipBackwardbutton").unbind()
+			$("#skipForwardbutton").unbind()
+			$("#playPausebutton").unbind()
+			$("#stopbutton").unbind()
+			$("#playPausebutton").unbind()
+			$("#toggleMutebutton").unbind()
+			$("#volButton").unbind()
+			$("#big").unbind()
+			$("#small").unbind()
+			$("#waveform").unbind()
+			$("#vad").unbind()
+
+		},
+    
+    cut() {       
+      this.e.cut()
+      // this.wavesurfer.clearRegions()
+      // console.log('this.e.clipboard')
+      // console.log(this.e)
+    },
+    copy() {
+      // this.wavesurfer.clearRegions()
+      this.copyData = this.e.copy()
+      console.log(this.copyData)
+    },
+    paste() {
+      // this.wavesurfer.clearRegions()
+      this.e.paste()
+    },
+    del() {
+      // this.wavesurfer.clearRegions()
+      this.e.del()
+    },
+    redo() {
+      // this.wavesurfer.clearRegions()
+      this.e.redo()
+    },
+    undo() {
+      // this.wavesurfer.clearRegions()
+      this.e.undo()
+    },
+    downLoad() {
+      console.log('downLoad')
+      // console.log(this.wavesurfer.backend.buffer)
+      // var arraybuffer = this.wavesurfer.backend.buffer.getChannelData(0)
+      // var blob = new Blob([arraybuffer]);
+      
+      // console.log(this.copyData)
+      var blob = this.createWavBlob();
+
+      var a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.innerHTML = 'download';
+
+      // 指定生成的文件名
+      a.download = 'demo';
+      // document.body.appendChild(a)
+      a.click();
+      window.URL.revokeObjectURL(a.href);
+
+       // this.wavesurfer.loadBlob(blob)
+    },
+    createWavBlob () {
+      var buf = this.wavesurfer.backend.buffer;
+
+      // var data = buf.getChannelData(0);
+      var data = this.copyData[0]
+
+      var wav = this.encodeWAV(data, buf.sampleRate);
+      var blob = new Blob([wav], {type: 'audio/wav'});
+      return blob;
+    },
+    writeString (view, offset, string) {
+      for (var i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    },
+    floatTo16BitPCM (output, offset, input) {
+      for (var i = 0; i < input.length; i++, offset += 2) {
+        var s = Math.max(-1, Math.min(1, input[i]));
+        output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      }
+    },
+    encodeWAV (samples, sampleRate) {
+
+      var writeString = this.writeString
+      var floatTo16BitPCM = this.floatTo16BitPCM
+
+      var buffer = new ArrayBuffer(44 + samples.length * 2);
+      var view = new DataView(buffer);
+
+      /* RIFF identifier */
+      writeString(view, 0, 'RIFF');
+      /* file length */
+      view.setUint32(4, 32 + samples.length * 2, true);
+      /* RIFF type */
+      writeString(view, 8, 'WAVE');
+      /* format chunk identifier */
+      writeString(view, 12, 'fmt ');
+      /* format chunk length */
+      view.setUint32(16, 16, true);
+      /* sample format (raw) */
+      view.setUint16(20, 1, true);
+      /* channel count */
+      view.setUint16(22, 1, true);
+      /* sample rate */
+      view.setUint32(24, sampleRate, true);
+      /* byte rate (sample rate * block align) */
+      view.setUint32(28, sampleRate * 2, true);
+      /* block align (channel count * bytes per sample) */
+      view.setUint16(32, 2, true);
+      /* bits per sample */
+      view.setUint16(34, 16, true);
+      /* data chunk identifier */
+      writeString(view, 36, 'data');
+      /* data chunk length */
+      view.setUint32(40, samples.length * 2, true);
+
+      floatTo16BitPCM(view, 44, samples);
+
+      return view;
+    },
+    one () {
+      this.showWavesurfer();
+    },
+    two () {
+      this.showWavesurfer("static/audio/demo.wav");
     }
   },
   created() {
-    axios({
-        url: "http://localhost:9000/api/getaudiopath"
-      }).then(res => {
-        // console.log(res.data);
-        // this.isShow = true;
-        console.log(res.data.result);
-        this.audioPath = res.data.result;
-        console.log(this.audioPath);
-        // this.AUDIO_PATH(res.data.result);
-      })
+    
   },
   mounted() {
   //  new Promise(() => this.showWavesurfer());
+  // this.showWavesurfer("static/audio/demo.wav")
+  },
+  activated() {
+
+		this.showWavesurfer()
+		this.btnInit()
+  },
+  deactivated() {
+		console.log('destroyed')
+		this.deactivatedflag = false
+		if(this.wavesurfer.destroy){
+  		this.wavesurfer.destroy()
+  		console.log('this.wavesurfer.destroy()111')
+  	}
+  	this.unbindjq()
+  	console.log('this.unbindjq()')
+  	this.currentpage = 1
+
   }
 };
 </script>
@@ -353,7 +542,7 @@ export default {
   }
   .wave {
       width: 100%;
-      height: 126px;
+      // height: 126px;
       background-color: #303036;
   }
   .wave-controll{
