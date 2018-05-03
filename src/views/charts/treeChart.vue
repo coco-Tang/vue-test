@@ -3,7 +3,7 @@
       <div class="wrapper">
         <div class="data">
           <h3>数据统计</h3>
-          <div id="main"></div>
+          <div id="tree"></div>
         </div>
      </div>
   </div>
@@ -13,12 +13,13 @@ import echarts from "echarts"
 export default {
   data(){
       return {
-        chart: ""
+        // chart: ""
       }
   },
   methods: {
      initChart() {
-      this.chart = echarts.init(document.querySelector('#main'));
+      //  var map = echarts.init(document.getElementById('home_page_map'));
+      this.chart = echarts.init(document.getElementById('tree'));
       this.chart.setOption({tooltip: {
             trigger: 'item',
             triggerOn: 'mousemove'
@@ -140,7 +141,7 @@ export default {
       >h3 {
         padding: 20px;
       }
-      #main {
+      #tree {
         width: 100%;
         height: calc(100% - 65px);
       }
