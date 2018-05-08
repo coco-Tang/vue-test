@@ -6,6 +6,7 @@ import media from "../views/audio/Audio.vue"
 import slot from "../views/slot/Slot.vue"
 import treechart from "../views/charts/treeChart.vue"
 import mapchart from "../views/charts/mapChart.vue"
+import linechart from "../views/charts/LargeAreaBar.vue"
 import progressbar from "../views/progressbar/ProgressBar.vue"
 import element from "../views/element/ElementUi.vue"
 import paginator from "../views/paginator/Paginator.vue"
@@ -54,6 +55,10 @@ export default new VueRouter({
         {
             path: "/mapchart",
             component: mapchart
+        },
+        {
+            path: "/linechart",
+            component: linechart
         },
         {
             path: "/progress",
