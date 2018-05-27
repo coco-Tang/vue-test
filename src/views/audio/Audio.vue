@@ -135,7 +135,7 @@ export default {
 
 			this.btnInit()
 
-      wavesurfer.load(url || 'static/audio/乔颖_G_1.wav')
+      wavesurfer.load(url || 'static/audio/G.E.M.邓紫棋 - 光年之外.flac')
 
 
       this.e = Editor.Editor.init(this.wavesurfer)
@@ -499,7 +499,6 @@ export default {
   // this.showWavesurfer("static/audio/demo.wav")
   },
   activated() {
-
 		this.showWavesurfer()
 		this.btnInit()
   },

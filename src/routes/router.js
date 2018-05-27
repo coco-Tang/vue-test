@@ -9,6 +9,7 @@ import progressbar from "../views/progressbar/ProgressBar.vue"
 import element from "../views/element/ElementUi.vue"
 import paginator from "../views/paginator/Paginator.vue"
 import wavesurfer from "../views/audio/waveSurfer.vue"
+import fileupload from "../views/fileupload/FileUpload.vue"
 export default new VueRouter({
     routes: [
         {
@@ -54,6 +55,10 @@ export default new VueRouter({
         {
             path: "/paginator",
             component: paginator
+        },
+        {
+            path: "/fileupload",
+            component: fileupload
         },
         // {
         //     path: '/achievement',
