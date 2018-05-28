@@ -42,7 +42,6 @@
       <div 
       v-for='(itemCon,index) in tabContents' :key="index"
       v-show=" index == num">{{itemCon}}</div>
-<<<<<<< HEAD
   </div>
 
   <!-- 树形结构 -->
@@ -70,37 +69,12 @@
         </span>
       </span>
     </el-tree>
-=======
-  </div> -->
-
-
-      <!-- 栅格布局 -->
-      <!-- <el-row :gutter="36"> -->
-
-        <!-- <el-col :span="6" class="main__left"> -->
-          <!-- 123 -->
-          <!-- <sidenav></sidenav> -->
-        <!-- </el-col> -->
-
-        <!-- <el-col ref="main__right" :span="18" class="main__right"> -->
-          <!-- 345 -->
-          <!--<transition name="el-zoom-in-center">-->
-            <!-- <router-view class="page_view"></router-view> -->
-          <!--</transition>-->
-        <!-- </el-col> -->
-
-      <!-- </el-row> -->
->>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
   </div>
 </template>
 <script>
 import axios from "axios";
-<<<<<<< HEAD
+import datetimepicker from "../../components/DateTimePicker.vue"
   let id = 1000;
-=======
-import { Loading } from "element-ui";
-import datetimepicker from '../../components/DateTimePicker.vue'
->>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
 export default {
   // data() {
   //   return {};
@@ -158,14 +132,6 @@ export default {
       }
     ];
     return {
-<<<<<<< HEAD
-      data4: JSON.parse(JSON.stringify(data)),
-      data5: JSON.parse(JSON.stringify(data)),
-      tableData: [],
-      tabs: ["标题一", "标题二", "标题三"],
-      tabContents: ["内容一", "内容二", "内容三"],
-      num: 1
-=======
       loading: true,
       tableData: [
         {
@@ -194,7 +160,6 @@ export default {
       num: 1,
       /* datetimepicker */
       value6: ""
->>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
     };
   },
   components: {
@@ -247,9 +212,6 @@ export default {
     },
     tab(index) {
       this.num = index;
-<<<<<<< HEAD
-    }
-=======
     },
     tableRowClassName({row, rowIndex}) {
       console.log(row,rowIndex)
@@ -260,7 +222,6 @@ export default {
       }
       return '';
     },
->>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
   },
   created() {
     axios.interceptors.request.use(config => {
