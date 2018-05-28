@@ -141,7 +141,11 @@ export default {
 
       this.btnInit();
 
+<<<<<<< HEAD
+      wavesurfer.load(url || 'static/audio/G.E.M.邓紫棋 - 光年之外.flac')
+=======
       wavesurfer.load(url || "static/audio/G.E.M.邓紫棋 - 光年之外.flac");
+>>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
 
       this.e = Editor.Editor.init(this.wavesurfer);
     },
@@ -507,8 +511,13 @@ export default {
     ctx.fillRect(100, 10, 800, 800);
   },
   activated() {
+<<<<<<< HEAD
+		this.showWavesurfer()
+		this.btnInit()
+=======
     this.showWavesurfer();
     this.btnInit();
+>>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
   },
   deactivated() {
     console.log("destroyed");

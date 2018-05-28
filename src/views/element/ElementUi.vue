@@ -87,6 +87,35 @@
       <div 
       v-for='(itemCon,index) in tabContents' :key="index"
       v-show=" index == num">{{itemCon}}</div>
+<<<<<<< HEAD
+  </div>
+
+  <!-- 树形结构 -->
+  <el-tree
+      :data="data5"
+      show-checkbox
+      node-key="id"
+      default-expand-all
+      :expand-on-click-node="false">
+      <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span>{{ node.label }}</span>
+        <span>
+          <el-button
+            type="text"
+            size="mini"
+            @click="() => append(data)">
+            Append
+          </el-button>
+          <el-button
+            type="text"
+            size="mini"
+            @click="() => remove(node, data)">
+            Delete
+          </el-button>
+        </span>
+      </span>
+    </el-tree>
+=======
   </div> -->
 
 
@@ -106,15 +135,82 @@
         <!-- </el-col> -->
 
       <!-- </el-row> -->
+>>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
   </div>
 </template>
 <script>
 import axios from "axios";
+<<<<<<< HEAD
+  let id = 1000;
+=======
 import { Loading } from "element-ui";
 import datetimepicker from '../../components/DateTimePicker.vue'
+>>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
 export default {
+  // data() {
+  //   return {};
+  // },
+
   data() {
+    const data = [
+      {
+        id: 1,
+        label: "一级 1",
+        children: [
+          {
+            id: 4,
+            label: "二级 1-1",
+            children: [
+              {
+                id: 9,
+                label: "三级 1-1-1"
+              },
+              {
+                id: 10,
+                label: "三级 1-1-2"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 2,
+        label: "一级 2",
+        children: [
+          {
+            id: 5,
+            label: "二级 2-1"
+          },
+          {
+            id: 6,
+            label: "二级 2-2"
+          }
+        ]
+      },
+      {
+        id: 3,
+        label: "一级 3",
+        children: [
+          {
+            id: 7,
+            label: "二级 3-1"
+          },
+          {
+            id: 8,
+            label: "二级 3-2"
+          }
+        ]
+      }
+    ];
     return {
+<<<<<<< HEAD
+      data4: JSON.parse(JSON.stringify(data)),
+      data5: JSON.parse(JSON.stringify(data)),
+      tableData: [],
+      tabs: ["标题一", "标题二", "标题三"],
+      tabContents: ["内容一", "内容二", "内容三"],
+      num: 1
+=======
       loading: true,
       tableData: [
         {
@@ -142,15 +238,58 @@ export default {
       tabContents: ["内容一", "内容二", "内容三"],
       num: 1,
       /* datetimepicker */
+<<<<<<< HEAD
       value6: "",
       activeIndex: '1',
       activeIndex2: '1'
+=======
+      value6: ""
+>>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
+>>>>>>> c6507bfe2a7e1fdfe68cb41f74c6d23a053817a4
     };
   },
   components: {
     datetimepicker
   },
   methods: {
+    append(data) {
+      const newChild = { id: id++, label: "testtest", children: [] };
+      if (!data.children) {
+        this.$set(data, "children", []);
+      }
+      data.children.push(newChild);
+    },
+
+    remove(node, data) {
+      const parent = node.parent;
+      const children = parent.data.children || parent.data;
+      const index = children.findIndex(d => d.id === data.id);
+      children.splice(index, 1);
+    },
+
+    renderContent(h, { node, data, store }) {
+      return (
+        <span class="custom-tree-node">
+          <span>{node.label}</span>
+          <span>
+            <el-button
+              size="mini"
+              type="text"
+              on-click={() => this.append(data)}
+            >
+              Append
+            </el-button>
+            <el-button
+              size="mini"
+              type="text"
+              on-click={() => this.remove(node, data)}
+            >
+              Delete
+            </el-button>
+          </span>
+        </span>
+      );
+    },
     handleEdit(index, row) {
       console.log(index, row);
     },
@@ -159,6 +298,9 @@ export default {
     },
     tab(index) {
       this.num = index;
+<<<<<<< HEAD
+    }
+=======
     },
     tableRowClassName({row, rowIndex}) {
       console.log(row,rowIndex)
@@ -169,9 +311,13 @@ export default {
       }
       return '';
     },
+<<<<<<< HEAD
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     }
+=======
+>>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
+>>>>>>> c6507bfe2a7e1fdfe68cb41f74c6d23a053817a4
   },
   created() {
     axios.interceptors.request.use(config => {
