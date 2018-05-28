@@ -13,7 +13,7 @@ import VueProgressBar from 'vue-progressbar'
 
 /* -------引入element-ui并使用-------- */
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/index.css'
 // import 'element-ui/lib/theme-chalk/message-box.css'
 Vue.use(ElementUI)
 
