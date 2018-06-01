@@ -7,17 +7,15 @@ import slot from "../views/slot/Slot.vue"
 import treechart from "../views/charts/treeChart.vue"
 import mapchart from "../views/charts/mapChart.vue"
 import linechart from "../views/charts/LargeAreaBar.vue"
+import vchart from "../views/charts/vchart.vue"
 import progressbar from "../views/progressbar/ProgressBar.vue"
 import element from "../views/element/ElementUi.vue"
 import paginator from "../views/paginator/Paginator.vue"
 import wavesurfer from "../views/audio/waveSurfer.vue"
-<<<<<<< HEAD
-import fileupload from "../views/fileupload/FileUpload.vue"
-=======
 import home from "../views/navTab/home.vue"
 import fileupload from "../views/fileupload/index.vue"
+import dialog from "../views/dialog/index.vue"
 
->>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
 export default new VueRouter({
     routes: [
         {
@@ -61,6 +59,10 @@ export default new VueRouter({
             component: mapchart
         },
         {
+            path: "/vchart",
+            component: vchart
+        },
+        {
             path: "/linechart",
             component: linechart
         },
@@ -77,26 +79,6 @@ export default new VueRouter({
             component: paginator
         },
         {
-<<<<<<< HEAD
-            path: "/fileupload",
-            component: fileupload
-        },
-        // {
-        //     path: '/achievement',
-        //     name: 'achievement',
-        //     component: './components/Achievement.vue',
-        //     meta: {
-        //       progress: {
-        //         func: [
-        //           {call: 'color', modifier: 'temp', argument: '#ffb000'},
-        //           {call: 'fail', modifier: 'temp', argument: '#6e0000'},
-        //           {call: 'location', modifier: 'temp', argument: 'top'},
-        //           {call: 'transition', modifier: 'temp', argument: {speed: '1.5s', opacity: '0.6s', termination: 400}}
-        //         ]
-        //       }
-        //     }
-        //   }
-=======
             path: '/home',
             name: 'home',
             component: home,
@@ -110,8 +92,11 @@ export default new VueRouter({
                   }
                } 
             }
+        },
+        {
+            path: "/dialog",
+            component: dialog
         }
->>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
     ]
 })
 

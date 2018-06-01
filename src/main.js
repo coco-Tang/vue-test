@@ -13,10 +13,15 @@ import VueProgressBar from 'vue-progressbar'
 
 /* -------引入element-ui并使用-------- */
 import ElementUI from 'element-ui'
-// import 'element-ui/lib/theme-chalk/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 // import 'element-ui/lib/theme-chalk/message-box.css'
 Vue.use(ElementUI)
 
+import VCharts from 'v-charts';
+Vue.use(VCharts)
+
+import VueWorker from 'vue-worker';
+Vue.use(VueWorker);
 
 import {http}  from './utils/api.js'
 window.$http = Vue.prototype.$http = http

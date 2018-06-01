@@ -45,7 +45,9 @@
     "highlight.js": "^9.12.0",
     "qs": "^6.5.1",
     "svg-progress-bar": "^0.1.5",
+    "v-charts": "^1.16.19",
     "vue-progressbar": "^0.7.3",
+    "vue-worker": "^1.2.1",
     "vuex": "^3.0.1",
     "wavesurfer.js": "^2.0.0-beta01",
     "xlsx": "^0.11.18"
