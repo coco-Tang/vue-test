@@ -14,7 +14,11 @@ import paginator from "../views/paginator/Paginator.vue"
 import wavesurfer from "../views/audio/waveSurfer.vue"
 import home from "../views/navTab/home.vue"
 import fileupload from "../views/fileupload/index.vue"
+<<<<<<< HEAD
 import dialog from "../views/dialog/index.vue"
+=======
+import Spectrogram from "../views/spectrogram/index.vue"
+>>>>>>> 2712cebe35801c82d4c2f57b9d47a6f54619bd35
 
 export default new VueRouter({
     routes: [
@@ -67,6 +71,10 @@ export default new VueRouter({
             component: linechart
         },
         {
+            path: "/spectrogram",
+            component: Spectrogram
+        },
+        {
             path: "/progress",
             component: progressbar
         },
@@ -79,6 +87,7 @@ export default new VueRouter({
             component: paginator
         },
         {
+<<<<<<< HEAD
             path: '/home',
             name: 'home',
             component: home,
@@ -97,6 +106,26 @@ export default new VueRouter({
             path: "/dialog",
             component: dialog
         }
+=======
+            path: "/fileupload",
+            component: fileupload
+        },
+        // {
+        //     path: '/achievement',
+        //     name: 'achievement',
+        //     component: './components/Achievement.vue',
+        //     meta: {
+        //       progress: {
+        //         func: [
+        //           {call: 'color', modifier: 'temp', argument: '#ffb000'},
+        //           {call: 'fail', modifier: 'temp', argument: '#6e0000'},
+        //           {call: 'location', modifier: 'temp', argument: 'top'},
+        //           {call: 'transition', modifier: 'temp', argument: {speed: '1.5s', opacity: '0.6s', termination: 400}}
+        //         ]
+        //       }
+        //     }
+        //   }
+>>>>>>> 2712cebe35801c82d4c2f57b9d47a6f54619bd35
     ]
 })
 

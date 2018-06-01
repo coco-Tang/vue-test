@@ -23,8 +23,8 @@ Vue.use(VCharts)
 import VueWorker from 'vue-worker';
 Vue.use(VueWorker);
 
-import {http}  from './utils/api.js'
-window.$http = Vue.prototype.$http = http
+// import {http}  from './utils/api.js'
+// window.$http = Vue.prototype.$http = http
 
 const options = {
     color: '#bffaf3',
