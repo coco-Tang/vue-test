@@ -1,31 +1,7 @@
 <template>
   <div>
-    <button></button>
-    <!-- <el-table
-      :data="tableData"
-      @row-dblclick="EchartsHandler"
-      style="width: 100%">
-      <el-table-column
-        prop="id"
-        label="序号"
-        width="50">
-      </el-table-column>
-      <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址">
-      </el-table-column>
-    </el-table> -->
-  </div>
+    <button>按钮</button>
+   </div>
 </template>
 <script>
 export default {

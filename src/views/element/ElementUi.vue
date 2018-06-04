@@ -87,27 +87,6 @@
       <div 
       v-for='(itemCon,index) in tabContents' :key="index"
       v-show=" index == num">{{itemCon}}</div>
-<<<<<<< HEAD
-  </div> -->
-
-
-      <!-- 栅格布局 -->
-      <!-- <el-row :gutter="36"> -->
-
-        <!-- <el-col :span="6" class="main__left"> -->
-          <!-- 123 -->
-          <!-- <sidenav></sidenav> -->
-        <!-- </el-col> -->
-
-        <!-- <el-col ref="main__right" :span="18" class="main__right"> -->
-          <!-- 345 -->
-          <!--<transition name="el-zoom-in-center">-->
-            <!-- <router-view class="page_view"></router-view> -->
-          <!--</transition>-->
-        <!-- </el-col> -->
-
-      <!-- </el-row> -->
-=======
   </div>
 
   <!-- 树形结构 -->
@@ -135,18 +114,12 @@
         </span>
       </span>
     </el-tree>
->>>>>>> 2712cebe35801c82d4c2f57b9d47a6f54619bd35
   </div>
 </template>
 <script>
 import axios from "axios";
-<<<<<<< HEAD
-import { Loading } from "element-ui";
-import datetimepicker from '../../components/DateTimePicker.vue'
-=======
 import datetimepicker from "../../components/DateTimePicker.vue"
   let id = 1000;
->>>>>>> 2712cebe35801c82d4c2f57b9d47a6f54619bd35
 export default {
   // data() {
   //   return {};
@@ -204,15 +177,6 @@ export default {
       }
     ];
     return {
-<<<<<<< HEAD
-      data4: JSON.parse(JSON.stringify(data)),
-      data5: JSON.parse(JSON.stringify(data)),
-      tableData: [],
-      tabs: ["标题一", "标题二", "标题三"],
-      tabContents: ["内容一", "内容二", "内容三"],
-      num: 1,
-=======
->>>>>>> 2712cebe35801c82d4c2f57b9d47a6f54619bd35
       loading: true,
       tableData: [
         {
@@ -241,14 +205,6 @@ export default {
       num: 1,
       /* datetimepicker */
       value6: ""
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
->>>>>>> c6507bfe2a7e1fdfe68cb41f74c6d23a053817a4
->>>>>>> 88d1fd59063deab0c4230bf6db49b9ac198398ca
->>>>>>> 2712cebe35801c82d4c2f57b9d47a6f54619bd35
     };
   },
   components: {
@@ -311,19 +267,9 @@ export default {
       }
       return '';
     },
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     }
-=======
->>>>>>> e0f431811cb89209db9955cc575261e076c3aa7d
->>>>>>> c6507bfe2a7e1fdfe68cb41f74c6d23a053817a4
->>>>>>> 88d1fd59063deab0c4230bf6db49b9ac198398ca
->>>>>>> 2712cebe35801c82d4c2f57b9d47a6f54619bd35
   },
   created() {
     axios.interceptors.request.use(config => {

@@ -56,6 +56,7 @@ import { mapActions, mapGetters } from "vuex";
 import WaveSurfer from "wavesurfer.js";
 import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js";
+import SpectrogramPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js";
 import $ from "jquery";
 import Editor from "../../utils/editor";
 export default {
@@ -124,7 +125,10 @@ export default {
             primaryColor: "#9499df",
             secondaryColor: "#9499df"
           }),
-          RegionsPlugin.create({})
+          RegionsPlugin.create({}),
+          SpectrogramPlugin.create({
+            
+          })
         ]
       });
       wavesurfer.on("ready", percents => {

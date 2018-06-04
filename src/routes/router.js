@@ -14,11 +14,7 @@ import paginator from "../views/paginator/Paginator.vue"
 import wavesurfer from "../views/audio/waveSurfer.vue"
 import home from "../views/navTab/home.vue"
 import fileupload from "../views/fileupload/index.vue"
-<<<<<<< HEAD
-import dialog from "../views/dialog/index.vue"
-=======
 import Spectrogram from "../views/spectrogram/index.vue"
->>>>>>> 2712cebe35801c82d4c2f57b9d47a6f54619bd35
 
 export default new VueRouter({
     routes: [
@@ -87,26 +83,6 @@ export default new VueRouter({
             component: paginator
         },
         {
-<<<<<<< HEAD
-            path: '/home',
-            name: 'home',
-            component: home,
-            meta: {
-               is_nav_root: true,
-               nav: {
-                  'home': {
-                    //   icon: 'side_nav_base',
-                      name: '主页',
-                      path: '/home/index'
-                  }
-               } 
-            }
-        },
-        {
-            path: "/dialog",
-            component: dialog
-        }
-=======
             path: "/fileupload",
             component: fileupload
         },
@@ -125,7 +101,6 @@ export default new VueRouter({
         //       }
         //     }
         //   }
->>>>>>> 2712cebe35801c82d4c2f57b9d47a6f54619bd35
     ]
 })
 
