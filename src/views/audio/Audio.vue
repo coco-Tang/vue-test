@@ -1,7 +1,8 @@
 <template>
   <div class="media">
-    <!-- <button @click="one">按钮</button> -->
-    <!-- <button @click="two">按钮2</button> -->
+    <input type="file" name="" @change="getfilelist" ref="resource">
+    <button @click="one">按钮</button>
+    <button @click="two">按钮2</button>
       <div class="title">
         <span>文件名：</span>
         <span class="filename">花婆婆</span>
@@ -70,7 +71,8 @@ export default {
         zoomValue: 0
       },
       screenHeight: document.body.clientHeight - 100,
-      screenWidth: document.body.clientWidth
+      screenWidth: document.body.clientWidth,
+      FileData: []
     };
   },
   // computed: {
@@ -102,7 +104,7 @@ export default {
     }
   },
   methods: {
-    showWavesurfer(url) {
+    showWavesurfer(url,flag) {
       let wavesurfer = WaveSurfer.create({
         container: "#waveform",
         cursorColor: "#999",
@@ -145,7 +147,15 @@ export default {
 
       this.btnInit();
 
-      wavesurfer.load(url || "static/audio/G.E.M.邓紫棋 - 光年之外.flac");
+if (flag) {
+console.log('url')
+  wavesurfer.load(url);
+ } else {
+   console.log('file/blob')
+   wavesurfer.loadBlob(url);
+
+ }
+
 
       this.e = Editor.Editor.init(this.wavesurfer);
     },
@@ -484,16 +494,37 @@ export default {
 
       return view;
     },
+    getfilelist () {
+      let FileList = Array.prototype.slice.call(this.$refs.resource.files);
+      FileList.map((file, index) => {
+        if (index < 9) {
+          this.FileData.push(file);
+        } else {
+          return;
+        }
+      });
+      // console.log()
+    },
     one() {
-      this.showWavesurfer();
+      // this.getfilelist()
+      console.log(this.FileData);
+      let file = this.FileData[0];
+      this.showWavesurfer(file);
+      return;
+      let data = this.e.copy();
+      let wavesurfer = this.wavesurfer;
+      let audiobuffer = this.e.arrayBuf2audioBuf(data,wavesurfer);
+      let wav = this.audioBuffer2Wav(data);
+      var blob = new Blob([wav], { type: "audio/wav" });
+      this.showWavesurfer(blob);
     },
     two() {
-      this.showWavesurfer("static/audio/demo.wav");
+      this.showWavesurfer("static/audio/demo.wav",true);
     }
   },
   created() {},
   mounted() {
-    new Promise(() => this.showWavesurfer());
+    // new Promise(() => this.showWavesurfer());
     // this.showWavesurfer("static/audio/demo.wav")
     const that = this;
     window.onresize = () => {

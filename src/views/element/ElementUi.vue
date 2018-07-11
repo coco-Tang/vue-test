@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
       <!-- v-loading="loading" -->
-    <div id="main" class="table_content" style="overflow: auto;">
+    <!-- <div id="main" class="table_content" style="overflow: auto;">
       <el-table 
       element-loading-text="拼命加载中"
       element-loading-spinner="el-icon-loading"
@@ -28,54 +28,54 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
+    </div> -->
 
-    <datetimepicker></datetimepicker>
+    <!-- <datetimepicker></datetimepicker> -->
 
 
     <!-- 横向导航栏 -->
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-  <el-menu-item index="1">处理中心</el-menu-item>
-  <el-submenu index="2">
-    <template slot="title">我的工作台</template>
-    <el-menu-item index="2-1">选项1</el-menu-item>
-    <el-menu-item index="2-2">选项2</el-menu-item>
-    <el-menu-item index="2-3">选项3</el-menu-item>
-    <el-submenu index="2-4">
-      <template slot="title">选项4</template>
-      <el-menu-item index="2-4-1">选项1</el-menu-item>
-      <el-menu-item index="2-4-2">选项2</el-menu-item>
-      <el-menu-item index="2-4-3">选项3</el-menu-item>
-    </el-submenu>
-  </el-submenu>
-  <el-menu-item index="3" disabled>消息中心</el-menu-item>
-  <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
-</el-menu>
-<div class="line"></div>
-<el-menu
-  :default-active="activeIndex2"
-  class="el-menu-demo"
-  mode="horizontal"
-  @select="handleSelect"
-  background-color="#545c64"
-  text-color="#fff"
-  active-text-color="#ffd04b">
-  <el-menu-item index="1">处理中心</el-menu-item>
-  <el-submenu index="2">
-    <template slot="title">我的工作台</template>
-    <el-menu-item index="2-1">选项1</el-menu-item>
-    <el-menu-item index="2-2">选项2</el-menu-item>
-    <el-menu-item index="2-3">选项3</el-menu-item>
-    <el-submenu index="2-4">
-      <template slot="title">选项4</template>
-      <el-menu-item index="2-4-1">选项1</el-menu-item>
-      <el-menu-item index="2-4-2">选项2</el-menu-item>
-      <el-menu-item index="2-4-3">选项3</el-menu-item>
-    </el-submenu>
-  </el-submenu>
-  <el-menu-item index="3" disabled>消息中心</el-menu-item>
-  <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
-</el-menu>
+    <!-- <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+      <el-menu-item index="1">处理中心</el-menu-item>
+      <el-submenu index="2">
+        <template slot="title">我的工作台</template>
+        <el-menu-item index="2-1">选项1</el-menu-item>
+        <el-menu-item index="2-2">选项2</el-menu-item>
+        <el-menu-item index="2-3">选项3</el-menu-item>
+        <el-submenu index="2-4">
+          <template slot="title">选项4</template>
+          <el-menu-item index="2-4-1">选项1</el-menu-item>
+          <el-menu-item index="2-4-2">选项2</el-menu-item>
+          <el-menu-item index="2-4-3">选项3</el-menu-item>
+        </el-submenu>
+      </el-submenu>
+      <el-menu-item index="3" disabled>消息中心</el-menu-item>
+      <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+    </el-menu> -->
+    <!-- <div class="line"></div> -->
+    <!-- <el-menu
+      :default-active="activeIndex2"
+      class="el-menu-demo"
+      mode="horizontal"
+      @select="handleSelect"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b">
+      <el-menu-item index="1">处理中心</el-menu-item>
+      <el-submenu index="2">
+        <template slot="title">我的工作台</template>
+        <el-menu-item index="2-1">选项1</el-menu-item>
+        <el-menu-item index="2-2">选项2</el-menu-item>
+        <el-menu-item index="2-3">选项3</el-menu-item>
+        <el-submenu index="2-4">
+          <template slot="title">选项4</template>
+          <el-menu-item index="2-4-1">选项1</el-menu-item>
+          <el-menu-item index="2-4-2">选项2</el-menu-item>
+          <el-menu-item index="2-4-3">选项3</el-menu-item>
+        </el-submenu>
+      </el-submenu>
+      <el-menu-item index="3" disabled>消息中心</el-menu-item>
+      <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+    </el-menu> -->
 
   <!-- tab栏实现 -->
   <!-- <ul>
@@ -88,9 +88,12 @@
       v-for='(itemCon,index) in tabContents' :key="index"
       v-show=" index == num">{{itemCon}}</div>
   </div>
+  -->
 
-  <!-- 树形结构 -->
-  <el-tree
+
+
+    <!-- 树形结构 -->
+    <!-- <el-tree
       :data="data5"
       show-checkbox
       node-key="id"
@@ -113,7 +116,49 @@
           </el-button>
         </span>
       </span>
-    </el-tree>
+    </el-tree> -->
+
+    <!-- input复合框 -->
+    <!-- <div style="margin-top: 15px;">
+      <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+        <el-select v-model="select" slot="prepend" placeholder="请选择">
+          <el-option v-for="(item,index) in selection" :key="index" :label="item" :value="item"></el-option>
+        </el-select>
+        <el-button slot="append" icon="el-icon-search" @click.stop="searchHandler"></el-button>
+      </el-input>
+    </div> -->
+
+
+    <!-- 分页 -->
+     <el-table
+      :data="tableData"
+      style="width: 100%">
+      <el-table-column
+        prop="listId"
+        label="日期"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="fileName"
+        label="姓名"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="calledNo"
+        label="地址">
+      </el-table-column>
+    </el-table>
+    <!--  -->
+      <!-- :page-size="100" -->
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="page_size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalCount">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -177,40 +222,74 @@ export default {
       }
     ];
     return {
+      currentPage: 1,
+      selection: ["a","b","v"],
       loading: true,
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
+      tableData: [],
+      totalCount: 0,
+      paginationData: [],
+      page_index: 1,
+      page_size: 10,
+      // tableData: [
+      //   {
+      //     date: "2016-05-02",
+      //     name: "王小虎",
+      //     address: "上海市普陀区金沙江路 1518 弄"
+      //   },
+      //   {
+      //     date: "2016-05-04",
+      //     name: "王小虎",
+      //     address: "上海市普陀区金沙江路 1517 弄"
+      //   },
+      //   {
+      //     date: "2016-05-01",
+      //     name: "王小虎",
+      //     address: "上海市普陀区金沙江路 1519 弄"
+      //   },
+      //   {
+      //     date: "2016-05-03",
+      //     name: "王小虎",
+      //     address: "上海市普陀区金沙江路 1516 弄"
+      //   }
+      // ],
       tabs: ["标题一", "标题二", "标题三"],
       tabContents: ["内容一", "内容二", "内容三"],
       num: 1,
       /* datetimepicker */
-      value6: ""
+      value6: "",
+      /* input复合框 */
+      input5: '',
+      select: ''
     };
   },
   components: {
     datetimepicker
   },
   methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.page_size = val;
+      this.loadData();
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.page_index = val;
+      this.loadData();
+      // console.log()
+    },
+    loadData() {
+      axios({url: "http://localhost:10001/api/getpaginatorlist"}).then(res=>{
+        console.log(res.data.result)
+        this.paginationData = res.data.result;
+        this.totalCount = res.data.result.length;
+        let page_size = this.page_size;
+        this.tableData = this.paginationData.splice((this.page_index - 1)*page_size, page_size);
+      })
+    },
+    searchHandler() {
+      console.log(this.select)
+      console.log(this.input5)
+    },
     append(data) {
       const newChild = { id: id++, label: "testtest", children: [] };
       if (!data.children) {
@@ -272,6 +351,9 @@ export default {
     }
   },
   created() {
+    this.loadData();
+    
+    return;
     axios.interceptors.request.use(config => {
       // config.headers["X-Requested-With"] = "XMLHttpRequest";
       // let loadingInstance = Loading.service({});
@@ -289,7 +371,7 @@ export default {
       return response;
     });
     axios({
-      url: "http://localhost:9000/api/geteletestlist"
+      url: "http://localhost:10001/api/geteletestlist"
     }).then(res => {
       console.log(res.data.result);
       this.tableData = res.data.result;
@@ -297,7 +379,14 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
+// @import url("//unpkg.com/element-ui@2.4.0/lib/theme-chalk/index.css");
+.el-select .el-input {
+  width: 130px;
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
 .active {
   color: blue;
 }
